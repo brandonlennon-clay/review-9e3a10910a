@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>NA Enterprise Run: Checks Before the Next Run</title>
+<style>
+:root{--ink:#111;--muted:#666;--line:#ddd;--soft:#f4f4f4;--bg:#fff}
+@media (prefers-color-scheme:dark){:root{--ink:#eee;--muted:#999;--line:#333;--soft:#1c1c1c;--bg:#111}}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:32px max(16px,env(safe-area-inset-left))}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 6px}
+p{margin:4px 0;color:var(--muted)}.done{font-weight:600;color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);background:var(--soft)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{overflow-x:auto}
+</style></head><body><div class="wrap">
+<h1>NA Enterprise run: checks before the next run</h1>
+<p>Row numbers refer to the Accounts tab of the review spreadsheet (row 1 is the header).</p>
+
+<h2>1. Big employee drops (330 accounts)</h2>
+<p>Salesforce has these at 4000+; Clay has them under 4,000 (197 at 700 or fewer). Real subsidiaries are a territory insight; wrong matches are our error.</p>
+<div class="tbl"><table><tr><th>Row</th><th>Account</th><th>Salesforce employees</th><th>Clay employees</th><th>Clay parent</th></tr>
+<tr><td class="n">178</td><td>SolutionsIQ Inc</td><td class="n">774,000</td><td class="n">188</td><td>Accenture plc</td></tr>
+<tr><td class="n">1837</td><td>TCS Electronics Inc</td><td class="n">607,979</td><td class="n">11</td><td>No parent found</td></tr>
+<tr><td class="n">2104</td><td>DuPont (dupont.de)</td><td class="n">24,000</td><td class="n">34</td><td>DuPont de Nemours, Inc.</td></tr>
+</table></div>
+
+<h2>2. Accounts sharing one company (207 accounts in 98 groups)</h2>
+<p>Several Salesforce accounts resolve to the same company. Confirm whether they are true duplicates or separate units.</p>
+<div class="tbl"><table><tr><th>Row</th><th>Account</th><th>Website</th><th>Salesforce employees</th><th>Clay employees</th></tr>
+<tr><td class="n">1571</td><td>Marriott International</td><td>westin-berlin.com</td><td class="n">203,911</td><td class="n">414,000</td></tr>
+<tr><td class="n">1847</td><td>Marriott International</td><td>westincleveland.com</td><td class="n">203,710</td><td class="n">414,000</td></tr>
+<tr><td class="n">2388</td><td>Marriott International</td><td>marriott.com</td><td class="n">418,000</td><td class="n">414,000</td></tr>
+<tr><td class="n">1915</td><td>Oracle</td><td>oracal.com</td><td class="n">143,000</td><td class="n">141,000</td></tr>
+<tr><td class="n">2184</td><td>Oracle</td><td>toa-ukraine.com</td><td class="n">207,375</td><td class="n">141,000</td></tr>
+<tr><td class="n">2772</td><td>Oracle</td><td>oracle.com</td><td class="n">162,000</td><td class="n">141,000</td></tr>
+</table></div>
+
+<h2>3. Bad websites in Salesforce</h2>
+<p>linkedin.com and junk values in the Website field caused 5 of the 6 failed runs. <span class="done">Fixed in the workflow.</span></p>
+
+<h2>4. Deleted accounts (54)</h2>
+<p>Accounts named "[Account marked as deleted]" will be left out of the next segment.</p>
+
+<h2>5. Acquired, merged or renamed (95), and country units on a global page (66)</h2>
+<p>Proposed fix: write the successor or parent link plus a status, instead of no data. To agree before scaling.</p>
+
+<h2>6. HQ outside the US or Canada (52)</h2>
+<p>Check each is the right entity and not a parent's office.</p>
+<div class="tbl"><table><tr><th>Row</th><th>Account</th><th>Salesforce subregion</th><th>Clay HQ</th></tr>
+<tr><td class="n">427</td><td>Westpac</td><td>ANZ</td><td>Sydney, Australia</td></tr>
+<tr><td class="n">217</td><td>Sumitomo Corporation</td><td>East Asia</td><td>Tokyo, Japan (Clay 82,488 employees vs Salesforce 8,500)</td></tr>
+<tr><td class="n">2104</td><td>DuPont (dupont.de)</td><td>East</td><td>Neu-Isenburg, Germany</td></tr>
+</table></div>
+
+<h2>7. PE ownership</h2>
+<p>The research isn't consistent on whether a PE firm controls a company. Spot-check parents that are PE firms.</p>
+<div class="tbl"><table><tr><th>Row</th><th>Account</th><th>Clay parent</th><th>Investor / Owner</th></tr>
+<tr><td class="n">881</td><td>3STEP Sports</td><td>No parent found</td><td>Juggernaut Capital Partners</td></tr>
+<tr><td class="n">2456</td><td>Lincoln Property Company</td><td>No parent found</td><td>Stone Point Capital</td></tr>
+</table></div>
+</div></body></html>
